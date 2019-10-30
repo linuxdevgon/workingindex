@@ -1,0 +1,17 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+      - /usr/share/filebeat/nginx/error.log
+  fields:
+    type: nginx_access
+  fields_under_root: true
+  scan_frequency: 5s
+
+setup.template.name: "filebeat-"
+setup.template.pattern: "filebeat-*"
+
+output.elasticsearch:
+  hosts: ["http://localhost:9200"]
+  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
+

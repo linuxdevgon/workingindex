@@ -1,0 +1,34 @@
+version: '2.0'
+
+services:
+
+    elasticsearch:
+        image: "docker.elastic.co/elasticsearch/elasticsearch:7.2.0"
+        environment:
+            - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+            - "discovery.type=single-node"
+            - "network.host: elasticsearch:9200"
+
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        volumes:
+            - elasticsearch_data:/usr/share/elasticsearch/data
+
+    kibana:
+        image: "docker.elastic.co/kibana/kibana:7.2.0"
+        ports:
+            - "5601:5601"
+   
+   
+    filebeat:
+        build:
+          context: filebeat/
+        user: root
+        volumes:
+            - ./filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml/:ro
+            - ./nginx/:/usr/share/filebeat/nginx/:ro
+            - /var/lib/docker:/var/lib/docker:ro
+            - /var/run/docker.sock:/var/run/docker.sock
+volumes:
+    elasticsearch_data:
