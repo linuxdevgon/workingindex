@@ -12,6 +12,6 @@ setup.template.name: "filebeat-"
 setup.template.pattern: "filebeat-*"
 
 output.elasticsearch:
-  hosts: ["http://localhost:9200"]
+  hosts: ["http://elasticsearch:9200"]
   index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"
 
